@@ -1,9 +1,9 @@
 import Controller.ControllerNotepad;
+import Logger.RecordInLogFile;
 import Model.FileOperation;
 import Model.Notepad;
 import Model.TemplateForReadingAndWritingInFile;
-import View.ValidationInputData;
-import View.ViewNotepad;
+import View.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,7 +14,13 @@ public class Main {
 
         ControllerNotepad controllerNotepad = new ControllerNotepad(notepad, new ValidationInputData());
 
-        ViewNotepad viewNotepad = new ViewNotepad(controllerNotepad, new ValidationInputData());
+        RecordInLogFile recordInLogFile = new RecordInLogFile("log");
+
+        View firstLevel = new ViewNotepadFirstLevel(controllerNotepad, new ValidationInputData());
+
+        View secondLevel = new ViewNotepadSecondLevelForLog(firstLevel, recordInLogFile);
+
+        ViewNotepad viewNotepad = new ViewNotepad(secondLevel);
 
         viewNotepad.menu();
 
